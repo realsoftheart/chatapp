@@ -23,5 +23,15 @@ function chat() {
     const [message, setMessage] = useState([]);
     const [{ user }, dispatch] = useStateValue();
 }
-    
+   
+useEffect(() => {
+        if (roomId) {
+            db.collection("rooms").doc(roomId).onSnapshot((snapshot) => {
+                setRoomName(snapshot.data().name);
 
+                db.collection('rooms').doc(roomId).collection("messages").orderBy('timestamp', 'asc').onSnapshot((snapchat)) => setMessages(snapchat.docs.map((doc) => doc.data()));
+            });
+        }
+    }, [roomId]);
+
+    const sendMessage = (e)
